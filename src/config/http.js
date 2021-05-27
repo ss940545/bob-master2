@@ -7,7 +7,7 @@ export const headers = {
 };
 
 export const timeoutSec = 30;
-
+// WHY meta[name="api-url"] 
 const metaApiUrl = document.head.querySelector('meta[name="api-url"]');
 
 export const apiUrl = metaApiUrl ? metaApiUrl['content'] : '';

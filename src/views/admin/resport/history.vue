@@ -104,9 +104,12 @@
         hover
         small
       >
+      <!--詳細資訊 -->
         <template v-slot:cell(game_id)="data">
-          <b-button v-b-modal.modal-xl @click="gameDetail(data.item)">詳細資料</b-button>
+          <b-button v-b-modal.modal-xl variant="primary" 
+           @click="showGameDetail(data.item)"> {{ $t('cont.detail')}} </b-button>
         </template>
+
         <template #table-busy>
           <div class="text-center my-2" :style="`color:${color} !important`">
             <b-spinner class="align-middle"></b-spinner>
@@ -114,6 +117,7 @@
           </div>
         </template>
       </b-table>
+      <!--每頁.前往 -->
       <div class="row">
         <div class="col-sm">
           <b-input-group
@@ -149,7 +153,8 @@
           </b-input-group>
         </div>
       </div>
-      <template >
+      
+     <template v-if="chooseGameDetail.length>0">
         <gameDetail  :chooseGameDetail="chooseGameDetail" />
       </template>
     </b-card>
@@ -159,11 +164,11 @@
 <script>
 import axios from "axios";
 import VueCookies from "vue-cookies";
-import gameDetail from "@/views/admin/resport/gameDetail"
+import gameDetail from "@/views/admin/resport/gameDetail.vue"
 
 export default {
-  components:{
-    gameDetail
+  components: {
+    gameDetail,
   },
   data() {
     return {
@@ -206,8 +211,8 @@ export default {
       //欄位
       fields: [
         {
-          key: "game_id",
-          label: this.$t("cont.tid"),
+          key:"game_id",
+          label: this.$t("cont.detail"),
           thStyle: "min-width:50px",
         },
         {
@@ -259,12 +264,11 @@ export default {
         },
       ],
       test: [],
-      chooseGameDetail:[],
+      chooseGameDetail:[]
     };
   },
   computed: {
     rows() {
-      console.log('filterhistory', this.filterhistory);
       return this.filterhistory.length;
     },
     per(){
@@ -299,9 +303,6 @@ export default {
       this.mindatemax = this.filtermaxdate;
       this.search();
     },
-    // chooseGameDetail: function(){
-    //   this.test();
-    // }
   },
   created: async function () {
     if (localStorage.getItem("language") == null) {
@@ -395,11 +396,10 @@ export default {
         );
       }
     },
-    gameDetail(val) {
-
+    showGameDetail(val) {
+      this.chooseGameDetail=[]
       this.chooseGameDetail[0] = val;
-      this.$bvModal.show('modal-xl');
-      // console.log('chooseGameDetail', this.chooseGameDetail)
+      console.log('chooseGameDetail', this.chooseGameDetail)
     }
   },
 };

@@ -33,6 +33,7 @@ Vue.use(IconsPlugin)
 Vue.use(swal)
 Vue.use(SmoothScrollbar)
 Vue.use(i18n)
+Vue.use(Loading); 
 Vue.use(ElementUI)
 
 
@@ -42,6 +43,7 @@ Vue.component('font-awesome-icon', FontAwesomeIcon)
 Vue.config.productionTip = false
 library.add(fas)
 
+Vue.prototype.$isTest= '123'
 Vue.prototype.GLOBAL = App
 
 Vue.prototype.$date = date
@@ -61,8 +63,10 @@ Vue.prototype.isBusy = true //表格loading
 
   //登入狀態確認
   Vue.prototype.checklogin = async function () {
+    console.log('checklogin')
     const vue = this
     if (VueCookies.get("token") != "" && VueCookies.get("token") != null) {
+      console.log('token Test')
       await axios.post(`${this.api}/apitokencheck`, {
         api_token: VueCookies.get('token')
       }).then(async (res) => {
@@ -170,7 +174,11 @@ Vue.prototype.isBusy = true //表格loading
       });
     }
   },
-  //更新送出
+  // main.js可以直接打funtion去呼叫vue的函示
+  Vue.prototype.updatetest = function(){ 
+    this.test();
+  },
+  //更新送出 
   Vue.prototype.updateData = function (api, upDatedata, id) {
     this.$swal({
       title: this.$t('swal.updatecheck'),
@@ -186,14 +194,13 @@ Vue.prototype.isBusy = true //表格loading
           this.loading = false;
           if (res.data.status == 200) {
             this.target_array.forEach((item) => {
-              document.getElementById(
-                `${item}_${id}`
-              ).style.display = this.target.includes(item)
-                  ? "block"
-                  : "none";
+              document.getElementById( `${item}_${id}`).style.display = this.target.includes(item)? "block" : "none";
             });
           }
-          if (res.data.status == 200) this.getdata();
+          // 怎麼判斷 誰的getdata?
+          if (res.data.status == 200) this.getdata(); 
+          this.test();
+          console.log('status== 200')
           this.$swal({
             title:
               Number(res.data.status) === 200 ? this.$t('swal.updatasuccess') : this.$t('swal.updatafail'),

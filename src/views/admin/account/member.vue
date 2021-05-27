@@ -1,6 +1,6 @@
 <template>
   <div>
-    <loading :active.sync="loading" />
+    <loading :active.sync="loading"  />
     <b-card bg-variant="light" class="contcard shadows">
       <div class="row">
         <b-input-group
@@ -15,6 +15,7 @@
           />
         </b-input-group>
         <b-input-group class="col-sm" style="margin: 15px auto">
+          <!-- 靠modal綁定談窗 -->
           <b-button
             v-b-modal.create
             size="sm"
@@ -265,8 +266,15 @@ export default {
     filterid: function () {
       this.search();
     },
+    loading: {
+      handler(val) {
+        console.log('loading', val);
+      },
+      deep: true,
+    }
   },
   created: async function () {
+    // 隨機拿到顏色
     this.color = await this.randomColor();
     this.isBusy = true;
     await this.getdata();
@@ -277,8 +285,16 @@ export default {
       this.$root.$emit("bv::disable::tooltip");
     }
   },
+  mounted() { 
+    // this.loading = true;
+  },
   methods: {
+    test() {
+      console.log('testest')
+    },
+    // 拿 到所有會員資料
     async getdata() {
+      console.log('拿到getdata資料')
       await axios
         .post(`${this.api}/player`, {
           api_token: VueCookies.get("token"),
@@ -300,6 +316,9 @@ export default {
     },
     //修改
     update(id) {
+      //拿到會員ID 
+      console.log('target', this.target_array)
+      this.updatetest()
       this.target_array.forEach((item, index) => {
         if (item == "updbtn" || item == "name") {
           document.getElementById(`${item}_${id}`).style.display = "none";
@@ -318,6 +337,7 @@ export default {
         provider_id: data.item.provider_id,
         uniq_id: data.item.uniq_id,
       };
+
       var createPass = this.preg(upDatedata, this.pregdata);
       if (createPass) {
         this.updateData("player", upDatedata, data.item.id);
@@ -339,14 +359,19 @@ export default {
         this.createDate("player", this.createdata);
       }
     },
+    // 查詢
     async search() {
       this.filterplayer = this.player;
+      console.log('player', this.player);
+   
       if (this.filtername != "") {
+        // 用全部和 filtername 比對
         this.filterplayer = this.filterplayer.filter((item) =>
           item.name.toLowerCase().includes(this.filtername.toLowerCase())
         );
       }
       this.filterplayerbackup = JSON.stringify(this.filterplayer);
+      console.log('filter', this.filterplayerbackup)
     },
   },
 };

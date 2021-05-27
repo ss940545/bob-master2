@@ -7,6 +7,7 @@ export default {
   props: ["labels", "chartdata", "options"],
   mounted() {
     this.render();
+     this.renderChart(this.chartdata, this.options)
   },
   watch: {
     labels: function () {

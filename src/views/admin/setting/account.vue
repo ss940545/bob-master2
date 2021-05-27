@@ -100,12 +100,14 @@
         hover
         small
       >
+
         <template #table-busy>
           <div class="text-center my-2" :style="`color:${color} !important`">
             <b-spinner class="align-middle"></b-spinner>
             <strong>{{ $t("cont.loading") }}</strong>
           </div>
         </template>
+
         <template #cell(gender)="data">
           <b-input-group size="sm">
             <b-form-select
@@ -121,6 +123,7 @@
             </b-form-text>
           </b-input-group>
         </template>
+
         <template #cell(position)="data">
           <b-input-group size="sm">
             <b-form-select
@@ -141,6 +144,7 @@
             </b-form-text>
           </b-input-group>
         </template>
+
         <template #cell(cellphone)="data">
           <b-input-group size="sm">
             <b-form-input
@@ -157,6 +161,7 @@
             </b-form-text>
           </b-input-group>
         </template>
+
         <template #cell(level)="data">
           <b-input-group size="sm">
             <b-form-select
@@ -170,6 +175,7 @@
             </b-form-text>
           </b-input-group>
         </template>
+
         <template #cell(status)="data">
           <b-input-group size="sm">
             <b-form-select
@@ -191,6 +197,7 @@
             </b-form-text>
           </b-input-group>
         </template>
+
         <template #cell(updata)="data">
           <b-button
             size="sm"
@@ -219,6 +226,7 @@
             {{ $t("cont.Update") }}
           </b-button>
         </template>
+
         <template #cell(updatapassword)="data">
           <b-button
             size="sm"
@@ -234,6 +242,7 @@
           >
             {{ $t("cont.Updatepassword") }}
           </b-button>
+
           <b-modal
             :id="`update_${data.item.id}`"
             centered
@@ -247,6 +256,7 @@
                 />
               </b-form-group>
             </b-form>
+
             <template #modal-footer="{ cancel }">
               <b-button
                 variant="success"
@@ -258,9 +268,12 @@
                 $t("cont.cancel")
               }}</b-button>
             </template>
+
           </b-modal>
+
         </template>
       </b-table>
+
       <div class="row justify-content-between">
         <div class="col-sm">
           <b-input-group
@@ -583,7 +596,6 @@ export default {
           this.updatepassword.update_password !=
           this.updatepassword.update_password_check
         ) {
-          console.log(this.updatepassword)
           this.$swal({
             icon: "error",
             title: this.$t("swal.passwordnotsame"),

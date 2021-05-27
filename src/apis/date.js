@@ -14,10 +14,16 @@ export default new class date {
             date.setMonth(date.getMonth()-1)
             date.setDate(1)
         } else if (when == 'seven') {
+            // setDate()	設定是幾號
+            // getDate()	取得是幾號
+           
+            // console.log('getdata', date.setDate(date.getDate() - 6) );
             date.setDate(date.getDate() - 6)
         }
+        console.log('getMonth', date.getMonth() );
         var MM = (date.getMonth() + 1) < 10 ? `0${date.getMonth() + 1}` : date.getMonth() + 1
         var dd = (date.getDate()) < 10 ? `0${date.getDate()}` : date.getDate()
+        console.log('getDate',date.getDate() );
         startdate = `${date.getFullYear()}-${MM}-${dd}`
         return startdate
     }
@@ -45,6 +51,8 @@ export default new class date {
         return enddate
     }
     allday(startd,endd){
+        console.log('start', startd);
+
         var result = []
         var start = new Date(startd)
         var end = new Date(endd)

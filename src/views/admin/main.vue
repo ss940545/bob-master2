@@ -1,5 +1,14 @@
 <template>
   <div>
+     <!-- chart.js 測試////////////////////////////////////////// -->
+     <!-- https://ithelp.ithome.com.tw/articles/10188031 -->
+    <!-- <div>
+      <canvas id="myChart" width="400" height="400"></canvas>
+    </div> -->
+    <div  class="col-md-10 mt-3">
+       <LineChart :chartdata="lineChartData" :options="options" />
+    </div>
+
     <div>
       <b-card
         class="contcard shadows"
@@ -232,6 +241,33 @@ export default {
         responsive: true,
         maintainAspectRatio: false,
       },
+
+    // linechar 自己測試用
+      lineChartData: {
+        labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+        datasets: [
+          {
+            label: 'Weight track',
+            backgroundColor: "transparent",
+            data: [75, 75.6, 77.8, 78.1, 79.1, 80, 78.5],
+            borderColor: "rgba(1, 116, 188, 0.50)",
+            pointBackgroundColor: "rgba(171, 71, 188, 1)"
+          }
+        ]
+      },
+      // pieChartData: {
+      //   labels: ['Angular', 'Vue', 'React'],
+      //   datasets: [
+      //     {
+      //       backgroundColor: ['#e74c3c', '#1abc9c', '#3498db'],
+      //       data: [15, 25, 60]
+      //     }
+      //   ]
+      // },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false
+      }
     };
   },
   watch: {
@@ -256,6 +292,31 @@ export default {
     this.search("today", "top");
     this.search("today", "in_out");
     this.search("seven", "player");
+  },
+  mounted(){
+    // var ctx = document.getElementById('myChart');
+    // var myChart = new Chart(ctx, {
+    //   type: 'bar',
+    //   data: {
+    //     labels: ['一月', '二月', '三月'],
+    //     datasets: [{
+    //       backgroundColor: [
+    //         'rgba(255, 99, 132, 0.2)',
+    //         'rgba(54, 162, 235, 0.2)',
+    //         'rgba(255, 206, 86, 0.2)'
+    //       ],
+    //       borderColor: [
+    //         'rgba(255,99,132,1)',
+    //         'rgba(54, 162, 235, 1)',
+    //         'rgba(255, 206, 86, 1)',
+    //         'rgba(75, 192, 192, 1)'
+    //       ],
+    //       borderWidth: 1,
+    //       label: '銷售業績(百萬)',
+    //       data: [60, 49, 72]
+    //     }]
+    //   },
+    // });
   },
   methods: {
     //取得資料
@@ -399,6 +460,8 @@ export default {
     },
     //搜尋
     async search(when, arr) {
+      // console.log('when',when ); //seven
+      // console.log('arr', arr);   //player
       this.startdate[arr] = this.$date.setdate_s(when);
       this.enddate[arr] = this.$date.setdate_e(when);
       if (arr == "in_out") {
@@ -433,12 +496,11 @@ export default {
           this.enddate["player"]
         );
         this.PlayerLineChartDate.labels = this.allday["player"];
-        this.player = this.player.filter(
-          (item2) => item2.created_at.substring(0, 10) <= this.enddate["player"]
+        this.player = this.player.filter((item2) => 
+          item2.created_at.substring(0, 10) <= this.enddate["player"]
         );
-        this.player = this.player.filter(
-          (item2) =>
-            item2.created_at.substring(0, 10) >= this.startdate["player"]
+        this.player = this.player.filter((item2) =>
+          item2.created_at.substring(0, 10) >= this.startdate["player"]
         );
         if (this.player.length != 0) {
           this.group_by(this.player, "created_at", "player");
@@ -485,5 +547,6 @@ export default {
       }
     },
   },
+  
 };
 </script>

@@ -311,6 +311,7 @@ export default {
   },
   methods: {
     async getdata() {
+      console.log('wallet data')
       await axios
         .post(`${this.api}/wallet`, {
           api_token: VueCookies.get("token"),

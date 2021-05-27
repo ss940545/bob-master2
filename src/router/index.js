@@ -3,10 +3,12 @@ import VueRouter from 'vue-router'
 import VueCookies from "vue-cookies"
 import axios from 'axios';
 import Home from '@/views/Home.vue'
+import { login } from '@/apis/user';
 
 Vue.use(VueRouter)
 
 const paths = [
+  
     {
         path: '/login',
         meta: {
@@ -33,6 +35,7 @@ const paths = [
             {
                 path: '/member',
                 from: '/admin/account',
+                name:'member',
                 meta: {
                     title: 'member'
                 }
@@ -93,11 +96,16 @@ const paths = [
                     title: 'serverconfig'
                 }
             }]
-    }
+    },
+    
 ]
 var routes = [];
+
+// 抓取目前路徑名稱判斷導入相對應 VUE檔案
 paths.forEach((item) => {
+    // console.log('paths', item); 
     if (item.path == '/login') {
+        // router.push(`@/views${item.path}.vue`)
         routes.push({
             path: item.path,
             component: () => import(`@/views${item.path}.vue`),
@@ -109,12 +117,15 @@ paths.forEach((item) => {
         routes.push({
             path: item.path,
             component: Home,
+            // 預設後台路徑
             redirect: "/admin/main",
             children: []
         })
     }
 })
+
 routes[1].children = paths[1].children.map((item) => {
+    console.log('children')
     return {
         path: item.path,
         component: () => import(`@/views${item.from}${item.path}.vue`),
@@ -123,7 +134,6 @@ routes[1].children = paths[1].children.map((item) => {
         }
     }
 })
-
 const router = new VueRouter({
     mode: 'history',
     base: process.env.BASE_URL,
@@ -131,15 +141,24 @@ const router = new VueRouter({
 })
 
 router.beforeEach((to, from, next) => {
-    if (to.path.charAt(to.path.length-1) == "/" && to.path.length > 1){
-        next(to.path.substring(0,to.path.length-1))
-    }
+    // console.log('to', to, );
+    // console.log('next', next);
+    // if (to.path.charAt(to.path.length-1) == "/" && to.path.length > 1){
+    //     console.log('to')
+    //     next(to.path.substring(0,to.path.length-1))
+    // }else{
+    //     console.log('noto')
+    // }
     if (VueCookies.get("token") != "" && VueCookies.get("token") != null) {
+       
         if (sessionStorage.getItem('status') == 200) {
             //已登入
+          console.log('已登入')
             if (to.path == "/login" || to.path == "/" || to.matched.length == 0) {
+              console.log('tomath', to.matched.length)
                 next('main');
             }
+            console.log('else')
             next();
         } else {
             axios.post('http://test777.ukyo.idv.tw/api/apitokencheck', {

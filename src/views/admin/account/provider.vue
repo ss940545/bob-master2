@@ -369,6 +369,9 @@ export default {
     }
   },
   methods: {
+    test() {
+      console.log('provider')
+    },
     //取得資料
     async getdata() {
       await axios

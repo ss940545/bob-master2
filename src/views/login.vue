@@ -105,7 +105,14 @@ export default {
     };
   },
   watch: {
+    // language: {
+    //   hander:  function () {
+    //   this.lang(this.language);
+    //   },
+    //   deep: true,
+    // },
     language: function () {
+      console.log('aa')
       this.lang(this.language);
     },
   },
@@ -125,14 +132,25 @@ export default {
     },
     async onSubmit() {
       if (this.form.name == "" || this.form.password == "") {
-        this.$swal(this.$t("login.error"), this.$t("login.noinput"), "error");
+        // +fire 差別
+        this.$swal.fire({
+          icon: 'error',
+          title:this.$t("login.error"),
+          text: 'Something went wrong!',
+          footer: '<a href>Why do I have this issue?</a>'
+        })
+        // this.$swal(
+        //   this.$t("login.error"), 
+        //   this.$t("login.noinput"), 
+        //   "error");
       } else {
         this.form.sign = md5(
           this.form.name +
-            this.form.unixtime +
-            this.form.salt +
-            this.form.password
+          this.form.unixtime +
+          this.form.salt +
+          this.form.password
         );
+        console.log('form', this.form)
         await axios
           .post(`${this.api}/login`, {
             name: this.form.name,
@@ -189,9 +207,10 @@ export default {
       }
     },
     lang(lang) {
-      this.$i18n.locale = lang;
+      this.$i18n.locale = this.language;
       localStorage.setItem("language", lang);
-      document.title = this.$t(`meta.${this.$route.meta.title}`);
+      // 更改meta語系
+      // document.title = this.$t(`meta.${this.$route.meta.title}`);
     },
   },
 };

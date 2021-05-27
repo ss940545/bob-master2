@@ -47,6 +47,7 @@
             }}</b-button>
           </b-input-group-append>
         </b-input-group>
+  <!-- 開始日期 -->
         <b-input-group
           class="col-sm"
           :prepend="$t('cont.end')"
@@ -73,6 +74,7 @@
             }}</b-button>
           </b-input-group-append>
         </b-input-group>
+   <!-- 結束日期 -->
         <b-button-group
           style="margin: 15px auto; min-width: 349px"
           size="sm"
@@ -271,10 +273,12 @@ export default {
     },
     filtermindate: function () {
       this.maxdatemin = this.filtermindate;
+       console.log('開始', this.maxdatemin)
       this.search();
     },
     filtermaxdate: function () {
       this.mindatemax = this.filtermaxdate;
+      console.log('結束', this.mindatemax)
       this.search();
     },
   },

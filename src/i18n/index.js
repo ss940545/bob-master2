@@ -7,8 +7,8 @@ import {locale as jp} from './langs/jp'
 
 Vue.use(VueI18n);
 
-let messages = {}
-messages = { ...messages, en, zh, cn, jp }
+let messages = {en, zh, cn, jp  }
+// messages = { ...messages, en, zh, cn, jp }
 
 const i18n = new VueI18n({
     locale: localStorage.getItem('language') || 'zh',

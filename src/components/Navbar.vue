@@ -9,6 +9,7 @@
           />
         </b-button>
       </b-navbar-nav>
+
       <b-navbar-nav class="brand-center">
         <b-navbar-brand @click="push()">{{ $t("navbar.Logo") }}</b-navbar-brand>
       </b-navbar-nav>
@@ -22,6 +23,7 @@
             <font-awesome-icon icon="user" /> {{ name }}
           </template>
         </b-nav-item-dropdown>
+        
         <b-nav-item-dropdown right>
           <b-dropdown-item @click="lang('zh')"> 繁體中文 </b-dropdown-item>
           <b-dropdown-item @click="lang('cn')"> 简体中文 </b-dropdown-item>
@@ -132,6 +134,7 @@
 
 <script>
 export default {
+  // 先將 reload 透過 inject 注入，便可以直接調用 this.reload()
   inject: ["reload"],
   data() {
     return {
@@ -168,22 +171,31 @@ export default {
   created: async function () {
     window.addEventListener("resize", this.windowsize);
     this.screenWidth = 769;
+    // 拿到使用者
     this.name = sessionStorage.getItem("name");
+
+    // 判斷MAIN 是否後面需要接文字
     if (this.$route.path == "/" || this.$route.path == "/main") {
       this.home = false;
     } else {
       this.home = true;
     }
+
+    // 判斷路由是否login
     if (this.$route.path == "/login") {
       this.login = false;
     } else {
       this.login = true;
     }
-    this.path = this.$route.path.replace(this.reEn, "");
+
+    // 拿到要得名稱去比對翻譯檔
+    this.path = this.$route.path.replace('/', "");
+
     await this.checklogin();
     this.sidebar = document.getElementById("side");
     this.con = document.getElementById("cont");
     this.windowsize();
+    // 是否登入?
     this.active = this.status;
     if (
       sessionStorage.getItem("status") != 200 ||
@@ -202,6 +214,7 @@ export default {
     },
     opensidebar() {
       this.windowsize();
+      
       if (this.sidebar.style.marginLeft == "-209.6px") {
         this.sidebar.style.marginLeft = "0rem";
         if (this.screenWidth > 768) {
@@ -211,6 +224,7 @@ export default {
         }
         this.sidestatus = true;
       } else {
+        console.log('opensider')
         this.backdrop = false;
         this.sidebar.style.marginLeft = "-209.6px";
         if (this.screenWidth > 768) {
